@@ -29,7 +29,7 @@
     layout.alternateBackgrounds = YES;
     layout.scrollDirection = (self.view.bounds.size.width < self.view.bounds.size.height ? UICollectionViewScrollDirectionVertical : UICollectionViewScrollDirectionHorizontal);
     
-    self.numberOfCellsInSections = [@[@(5), @(2), @(31), @(1), @(5), @(25)] mutableCopy];
+    self.numberOfCellsInSections = [@[@(5)] mutableCopy];
     [self reloadCellSizes];
 }
 
@@ -86,10 +86,13 @@
 #pragma mark - Action Handlers
 
 - (IBAction)onRefresh:(id)sender {
-    [self reloadCellSizes];
+    //    [self reloadCellSizes];
+    NSInteger sectionIndex = 0;
     
+    NSInteger numberOfCellsInSection = [self.numberOfCellsInSections[sectionIndex] integerValue];
+    [self.numberOfCellsInSections replaceObjectAtIndex:sectionIndex withObject:@(random()%10+numberOfCellsInSection)];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
+    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
 }
 
 - (IBAction)onAdd:(id)sender {
@@ -105,12 +108,12 @@
     NSInteger sectionIndex = 0;
     NSInteger numberOfCellsInSection = [self.numberOfCellsInSections[sectionIndex] integerValue];
     
-    if (numberOfCellsInSection > 1) {
-        [self.numberOfCellsInSections replaceObjectAtIndex:sectionIndex withObject:@(numberOfCellsInSection-1)];
-        
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:numberOfCellsInSection-1 inSection:sectionIndex];
-        [self.collectionView deleteItemsAtIndexPaths:@[indexPath]];
-    }
+    //    if (numberOfCellsInSection > 1) {
+    [self.numberOfCellsInSections replaceObjectAtIndex:sectionIndex withObject:@(numberOfCellsInSection-1)];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:numberOfCellsInSection-1 inSection:sectionIndex];
+    [self.collectionView deleteItemsAtIndexPaths:@[indexPath]];
+    //    }
 }
 
 @end
